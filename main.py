@@ -1,32 +1,16 @@
 import pygame
 
-
-WIDTH, HEIGHT = 900, 500
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.init()
+screen = pygame.display.set_mode((400, 800))
 pygame.display.set_caption("Mineswapper :D")
-
-WHITE = (255, 255, 255)
-FPS = 60
-
-def draw_window():
-    WIN.fill(WHITE)
+clock = pygame.time.Clock()
+    
+while True:
+    clock.tick(60)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+             pygame.quit()
+             exit()
+    
     pygame.display.update()
-
-
-
-def main():
-    clock = pygame.time.Clock()
-    run = True
-    while run:
-        clock.tick(FPS)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-
-        draw_window()
-
-
-    pygame.quit()
-
-if __name__ == "__main__":
-    main()
+    clock.tick(60)
