@@ -42,15 +42,18 @@ class Grid:
     def __init__(self, xPos, yPos):
         self.xPos = xPos
         self.yPos = yPos
-        self.clicked = False
-        self.mine = False
-        self.flag = False
+        self.clickCheck = False
+        self.mineCheck = False
+        self.flagCheck = False
         # number of surrounding mines
         self.value = 0
         self.rect = pygame.Rect(self.xPos * imgSize, self.yPos * imgSize, imgSize, imgSize)
     
     def drawGrid(self):
-        screen.blit(grid0, self.rect)
+        if self.mineCheck == False:
+            screen.blit(grid0, self.rect)
+        else:
+            screen.blit(mine, self.rect)
 
 
 # Global variable
@@ -58,11 +61,24 @@ grid = []
 mines = []
 
 def createGrid():
+
+    # Initializing mines
+    for i in range(0, numMines):
+        x = random.randint(0, horGrid-1)
+        y = random.randint(0, verGrid-1)
+        mines.append((x, y))
+        print(mines[i])
+
+    # Initializing grid
     for x in range(0, horGrid):
         line = []
         for y in range(0, verGrid):
             line.append(Grid(x, y))
+            if (x, y) in mines:
+                line[y].mineCheck = True
+
         grid.append(line)
+
 
 def main():
     createGrid()
