@@ -35,7 +35,8 @@ mineFalse = pygame.image.load("Assets/mineFalse.png")
 
 # Global variable
 grid = []
-
+mines = []
+gameRunning = True
 
 class Grid:
     # Grid Class contains info for individual points on grid
@@ -43,22 +44,56 @@ class Grid:
         self.xPos = xPos
         self.yPos = yPos
         self.clickCheck = False
-        self.mineCheck = False
-        self.flagCheck = False
+        self.mine = False
+        self.flag = False
         # number of surrounding mines
-        self.value = 0
+        self.adjacentMines = 0
         self.rect = pygame.Rect(self.xPos * imgSize, self.yPos * imgSize, imgSize, imgSize)
     
-    def drawGrid(self):
-        if self.mineCheck == False:
-            screen.blit(grid0, self.rect)
+    def displayGrid(self):
+        if self.mine == False and self.flag == True and gameRunning == False:
+            screen.blit(mineFalse, self.rect)
         else:
-            screen.blit(mine, self.rect)
+            if self.clickCheck == True:
+                if self.mine == True and self.flag == False:
+                    screen.blit(mineClicked, self.rect)
+                else:
+                    if self.adjacentMines == 0:
+                        screen.blit(empty, self.rect)            
+                    elif self.adjacentMines == 1:
+                        screen.blit(grid1, self.rect)
+                    elif self.adjacentMines == 2:
+                        screen.blit(grid2, self.rect)
+                    elif self.adjacentMines == 3:
+                        screen.blit(grid3, self.rect)
+                    elif self.adjacentMines == 4:
+                        screen.blit(grid4, self.rect)
+                    elif self.adjacentMines == 5:
+                        screen.blit(grid5, self.rect)
+                    elif self.adjacentMines == 6:
+                        screen.blit(grid6, self.rect)
+                    elif self.adjacentMines == 7:
+                        screen.blit(grid7, self.rect)
+                    elif self.adjacentMines == 8:
+                        screen.blit(grid8, self.rect)
+            else:
+                if self.flag == True:
+                    screen.blit(flag, self.rect)
+                elif self.mine == True and gameRunning == False:
+                    screen.blit(mine,self.rect)
+                else:
+                    screen.blit(grid0, self.rect)
+    
 
+    def getAdjacentMines(self):
+        if self.mine == False:
+            for x in range(self.xPos-1, self.xPos+2):
+                if x >= 0 and x < horGrid:
+                    for y in range(self.yPos-1, self.yPos+2):
+                        if y >= 0 and y < verGrid:
+                            if grid[x][y].mine == True:
+                                self.adjacentMines += 1
 
-# Global variable
-grid = []
-mines = []
 
 def createGrid():
 
@@ -71,7 +106,6 @@ def createGrid():
         # Checking for duplicate grid positions
         while dupeCheck:
             if (x, y) in mines:
-                print("dupe found")
                 x = random.randint(0, horGrid-1)
                 y = random.randint(0, verGrid-1)
             else:
@@ -85,21 +119,26 @@ def createGrid():
         for y in range(0, verGrid):
             line.append(Grid(x, y))
             if (x, y) in mines:
-                line[y].mineCheck = True
+                line[y].mine = True
 
         grid.append(line)
 
 
 def main():
+    
+    # Creating grid and setting up mines values
     createGrid()
+    for i in grid:
+        for j in i:
+            j.getAdjacentMines()
 
-    while True:
+    while gameRunning:
         clock.tick(60)
 
         # Displaying Grid
         for i in grid:
             for j in i:
-                j.drawGrid()
+                j.displayGrid()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
