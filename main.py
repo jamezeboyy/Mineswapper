@@ -64,10 +64,20 @@ def createGrid():
 
     # Initializing mines
     for i in range(0, numMines):
+        dupeCheck = True
         x = random.randint(0, horGrid-1)
         y = random.randint(0, verGrid-1)
+
+        # Checking for duplicate grid positions
+        while dupeCheck:
+            if (x, y) in mines:
+                print("dupe found")
+                x = random.randint(0, horGrid-1)
+                y = random.randint(0, verGrid-1)
+            else:
+                dupeCheck = False
+
         mines.append((x, y))
-        print(mines[i])
 
     # Initializing grid
     for x in range(0, horGrid):
