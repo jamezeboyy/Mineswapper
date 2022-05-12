@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 # Window size setup (will be changed later to easily change difficulty in game)
 imgSize = 32
@@ -139,13 +140,30 @@ def main():
         for i in grid:
             for j in i:
                 j.displayGrid()
+        pygame.display.update()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            
+            # Handling Player Inputs
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x = math.floor(event.pos[0]/32)
+                y = math.floor(event.pos[1]/32)
+
+                # Left Click
+                if event.button == 1:
+                    if grid[x][y].flag == False:
+                        grid[x][y].clickCheck = True
+
+                # Right Click
+                if event.button == 3:
+                    if grid[x][y].clickCheck == False and grid[x][y].flag == False:
+                        grid[x][y].flag = True
+                    elif grid[x][y].flag == True:
+                        grid[x][y].flag = False
         
-        pygame.display.update()
         clock.tick(60)
 
 
