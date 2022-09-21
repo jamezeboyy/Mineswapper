@@ -97,15 +97,14 @@ class Grid:
                                 self.adjacentMines += 1
 
 
-    def emptyClick(self):
-        if self.adjacentMines == 0:
-            self.clickCheck = True
+    def reveal(self):
+        self.clickCheck = True
+        if self.adjacentMines == 0 and self.mine == False:
             for x in range(self.xPos-1, self.xPos+2):
                 if x >= 0 and x < horGrid:
                     for y in range(self.yPos-1, self.yPos+2):
                         if y >= 0 and y < verGrid:
-                            if grid[x][y].adjacentMines == 0:
-                                grid[x][y].clickCheck = True
+                            grid[x][y].clickCheck = True
 
 
 def createGrid():
@@ -167,8 +166,7 @@ def main():
                 # Left Click
                 if event.button == 1:
                     if grid[x][y].flag == False:
-                        grid[x][y].clickCheck = True
-                        grid[x][y].emptyClick()
+                        grid[x][y].reveal()
 
                 # Right Click
                 if event.button == 3:
