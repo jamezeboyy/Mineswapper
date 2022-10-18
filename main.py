@@ -8,7 +8,6 @@ imgSize = 32
 verGrid = 10
 horGrid = 10
 numMines = 9
-WHITE = (200, 200, 200)
 HEIGHT = verGrid*imgSize
 WIDTH = horGrid*imgSize
 
